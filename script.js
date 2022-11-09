@@ -7,6 +7,28 @@ const genres = []; // genres array
 const express = require('express');
 const app = express();
 const port = 3000;
+const jsonDB = require('simple-json-db');
+const db = new jsonDB('database.json');
+
+// create new list with given name
+app.post('/api/playlists/:given_name', (req, res) => {
+    const playlistName = req.params.given_name;
+    db.set(playlistName,'');
+    res.send("Playlist has been created");
+});
+
+// modify an existing playlist or return error if it doesn't exist
+app.put('/api/playlists/:given_name', (req, res) => {
+    const playlistName = req.params.given_name;
+    const tracklist = req.query.tracklist;
+    if(db.has(playlistName)){
+        db.set(playlistName, tracklist);
+    }
+    else{
+        res.status(404).send(`List ${playlistName} does not exist was not found!`);
+    }
+    res.send("Working..");
+});
 
 
 // setup serving front-end using express static
