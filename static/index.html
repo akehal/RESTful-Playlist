@@ -7,7 +7,29 @@
   </head>
 
   <body>
-    <h1>Music Selector</h1>
+    <h1>Music Organizer</h1>
+
+    <div id="search_wrapper">
+      <form>
+        <p>
+          <input type = "text" id="track-search" placeholder="Search Track" onkeydown="return /[a-z]/i.test(event.key)">
+          <button id="track-search" class="btn"><span>Search Genre</span></button>
+        </p>
+
+        <p> 
+          <input type = "text" id="artist-search" placeholder="Search Artist" onkeydown="return /[a-z]/i.test(event.key)">
+          <button id="artist-search" class="btn">Search Artist</button>
+        </p>
+
+        <p>
+          <input type = "text" id="album-search" placeholder="Search Album" onkeydown="return /[a-z]/i.test(event.key)">
+          <button id="album-search" class="btn">Search Album</button>
+        </p>
+
+      </form>
+    </div>
+
+
   </body>
 
 </html>
