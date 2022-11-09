@@ -4,6 +4,18 @@ const albums = []; // albums array
 const artists = []; // artists array
 const tracks = []; // tracks array
 const genres = []; // genres array
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Setup serving front-end using express static
+app.use('/', express.static('static'));
+
+
+// listen to port 3000 on localhost
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+})
 
 //parses and stores albums information in the array 
 fs.createReadStream('raw_albums.csv')
