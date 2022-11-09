@@ -53,8 +53,21 @@ app.get('/api/artists/:artist_id', (req, res) => {
     }
 });
 
+// get track details
+app.get('/api/tracks', (req, res) => {
+    res.send(tracks);
+});
 
-
+app.get('/api/tracks/:track_id', (req, res) => {
+    const id = req.params.track_id;
+    const track = tracks.find(t => parseInt(t.track_id) === parseInt(id));
+    if (track) {
+        res.send(track);
+    }
+    else {
+        res.status(404).send(`Track ${id} was not found!`);
+    }
+});
 
 // listen to port 3000 on localhost
 app.listen(port, () => {
