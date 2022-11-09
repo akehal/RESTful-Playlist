@@ -11,6 +11,34 @@ const port = 3000;
 // Setup serving front-end using express static
 app.use('/', express.static('static'));
 
+// Setting up middleware to do logging
+app.use((req, res, next) => {
+    console.log(`${req.method} request for ${req.url}`);
+    next();
+})
+
+// Parse data in JSON
+app.use(express.json());
+
+
+// Genre backend functionality 
+app.get('/api/genres', (req, res) => {
+    res.send(genres);
+});
+
+app.get('/api/genres/:genre_id', (req, res) => {
+    const id = req.params.genre_id;
+    const genre = genres.find(g => g.genre_id == parseInt(id));
+    console.log(id);
+    console.log(genre);
+    if (genre) {
+        res.send(genre);
+    }
+    else {
+        res.status(404).send(`Genre ${id} was not found!`);
+    }
+});
+
 
 // listen to port 3000 on localhost
 app.listen(port, () => {
