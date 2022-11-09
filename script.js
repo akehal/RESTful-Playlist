@@ -8,29 +8,27 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-// Setup serving front-end using express static
+// setup serving front-end using express static
 app.use('/', express.static('static'));
 
-// Setting up middleware to do logging
+// setting up middleware to do logging
 app.use((req, res, next) => {
     console.log(`${req.method} request for ${req.url}`);
     next();
 })
 
-// Parse data in JSON
+// parse data in JSON
 app.use(express.json());
 
 
-// Genre backend functionality 
+// get genre details
 app.get('/api/genres', (req, res) => {
     res.send(genres);
 });
 
 app.get('/api/genres/:genre_id', (req, res) => {
     const id = req.params.genre_id;
-    const genre = genres.find(g => g.genre_id == parseInt(id));
-    console.log(id);
-    console.log(genre);
+    const genre = genres.find(g => parseInt(g.genre_id) === parseInt(id));
     if (genre) {
         res.send(genre);
     }
@@ -38,6 +36,24 @@ app.get('/api/genres/:genre_id', (req, res) => {
         res.status(404).send(`Genre ${id} was not found!`);
     }
 });
+
+// get artist details
+app.get('/api/artists', (req, res) => {
+    res.send(artists);
+});
+
+app.get('/api/artists/:artist_id', (req, res) => {
+    const id = req.params.artist_id;
+    const artist = artists.find(a => parseInt(a.artist_id) === parseInt(id));
+    if (artist) {
+        res.send(artist);
+    }
+    else {
+        res.status(404).send(`Artist ${id} was not found!`);
+    }
+});
+
+
 
 
 // listen to port 3000 on localhost
