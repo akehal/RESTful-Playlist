@@ -14,7 +14,7 @@ const db = new jsonDB('database.json');
 app.post('/api/playlists/:given_name', (req, res) => {
     const playlistName = req.params.given_name;
     db.set(playlistName,'');
-    res.send("Playlist has been created");
+    res.send(`Playlist ${playlistName} has been created`);
 });
 
 // modify an existing playlist or return error if it doesn't exist
@@ -23,12 +23,26 @@ app.put('/api/playlists/:given_name', (req, res) => {
     const tracklist = req.query.tracklist;
     if(db.has(playlistName)){
         db.set(playlistName, tracklist);
+        res.send(`Playlist ${playlistName} has been modified!`)
     }
     else{
-        res.status(404).send(`List ${playlistName} does not exist was not found!`);
+        res.status(404).send(`List ${playlistName} does not exist!`);
     }
-    res.send("Working..");
 });
+
+// get track list within a playlist
+
+// delete an existing playlist
+app.delete('/api/playlists/:given_name', (req, res) => {
+    const listName = req.params.given_name;
+    if(db.has(listName)){
+        db.delete(listName);
+        res.send(`Playlist ${listName} has been deleted`)
+    }
+    else{
+        res.status(404).send(`List ${listName} does not exist!`);
+    }
+})
 
 
 // setup serving front-end using express static
