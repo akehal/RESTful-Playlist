@@ -8,6 +8,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+
 // setup serving front-end using express static
 app.use('/', express.static('static'));
 
@@ -53,7 +54,7 @@ app.get('/api/artists/:artist_id', (req, res) => {
     }
 });
 
-// get track details
+// get track details by id
 app.get('/api/tracks', (req, res) => {
     res.send(tracks);
 });
@@ -68,6 +69,35 @@ app.get('/api/tracks/:track_id', (req, res) => {
         res.status(404).send(`Track ${id} was not found!`);
     }
 });
+
+// get track details by name using given search pattern
+app.get('/api/tracknames/:track_title', (req, res) => {
+    const title = req.params.track_title;
+    const trackname = tracks.filter(t => t.track_title.includes(title));
+    console.log(title);
+    console.log(trackname);
+    if (trackname) {
+        res.send(trackname);
+    }
+    else {
+        res.status(404).send(`Track ${title} was not found!`);
+    }
+});
+
+// get artist details by name using given search pattern
+app.get('/api/artistnames/:artist_name', (req, res) => {
+    const name = req.params.artist_name;
+    const artistname = artists.filter(a => a.artist_name.includes(name));
+    console.log(name);
+    console.log(artistname);
+    if (artistname) {
+        res.send(artistname);
+    }
+    else {
+        res.status(404).send(`Artist ${name} was not found!`);
+    }
+});
+
 
 // listen to port 3000 on localhost
 app.listen(port, () => {
