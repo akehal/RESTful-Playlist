@@ -13,8 +13,14 @@ const db = new jsonDB('database.json');
 // create new list with given name
 app.post('/api/playlists/:given_name', (req, res) => {
     const playlistName = req.params.given_name;
-    db.set(playlistName,'');
-    res.send(`Playlist ${playlistName} has been created`);
+    if(!db.has(playlistName)){
+        db.set(playlistName, '');
+        res.send(`Playlist ${playlistName} has been created`);
+    }
+    else{
+        res.status(404).send(`List ${playlistName} already exists!`);
+    }
+
 });
 
 // modify an existing playlist or return error if it doesn't exist
@@ -30,7 +36,18 @@ app.put('/api/playlists/:given_name', (req, res) => {
     }
 });
 
-// get track list within a playlist
+// get list of track IDs within playlist
+app.get('/api/playlists/:given_name', (req, res) =>{
+    const playlistName = req.params.given_name;
+    if(db.has(playlistName)){
+        tracklist = db.get(playlistName);
+        res.send(`Playlist Track IDs: ${tracklist}`)
+    }
+    else{
+        res.status(404).send(`List ${playlistName} does not exist!`);
+    }
+});
+
 
 // delete an existing playlist
 app.delete('/api/playlists/:given_name', (req, res) => {
