@@ -48,6 +48,29 @@ app.get('/api/playlists/:given_name', (req, res) =>{
     }
 });
 
+// get list of list names, number of tracks on each list, and total play time of each list
+app.get('/api/playlists', (req, res) =>{
+    objectArray = [];
+    playlistNames = Object.keys(db.JSON());
+    for(const name of playlistNames){
+        var durationSum = 0; // sum of duration in seconds
+        trackIDsArray = db.get(name).split(',');        
+        numberOfTracks = trackIDsArray.length;
+        if(db.get(name) == '' ){
+            numberOfTracks = 0;
+        }
+        for(const id of trackIDsArray){
+            track = tracks.find(t => parseInt(t.track_id) === parseInt(id))
+            if(track){ // some tracks are undefined, so checking to make sure it exists
+                duration = track.track_duration.split(':');
+                durationSum += parseInt(duration[0])*60 + parseInt(duration[1]);
+            }
+        }
+        objectArray.push({playlistName: name, numberOfTracks: numberOfTracks, playlistDuration: durationSum/60 + " minutes"} );
+    }
+    res.send(objectArray);
+});
+
 
 // delete an existing playlist
 app.delete('/api/playlists/:given_name', (req, res) => {
