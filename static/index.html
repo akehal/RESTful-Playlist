@@ -10,21 +10,28 @@
     <h1>Music Organizer</h1>
 
     <div id="search_wrapper">
-      <form>
+      <form id="track-search">
         <p>
-          <input type = "text" id="track-search" placeholder="Search Track" onkeydown="return /[a-z]/i.test(event.key)">
-          <button id="track-search" class="btn"><span>Search Genre</span></button>
+          <input type = "text" id="track-search-input" placeholder="Search Track" onkeydown="return /[a-z]/i.test(event.key)">
+          <button id="track-search" class="btn">Search Track</button>
         </p>
+      </form>
 
-        <p> 
-          <input type = "text" id="artist-search" placeholder="Search Artist" onkeydown="return /[a-z]/i.test(event.key)">
-          <button id="artist-search" class="btn">Search Artist</button>
-        </p>
 
-        <p>
-          <input type = "text" id="album-search" placeholder="Search Album" onkeydown="return /[a-z]/i.test(event.key)">
-          <button id="album-search" class="btn">Search Album</button>
-        </p>
+        <form id="artist-search">
+          <p> 
+            <input type = "text" id="artist-search-input" placeholder="Search Artist" onkeydown="return /[a-z]/i.test(event.key)">
+            <button id="artist-search" class="btn">Search Artist</button>
+          </p>
+        </form>
+
+        <form id="album-search">
+          <p>
+            <input type = "text" id="album-search-input" placeholder="Search Album" onkeydown="return /[a-z]/i.test(event.key)">
+            <button id="album-search" class="btn">Search Album</button>
+          </p>
+        </form>
+
 
         <p>
           <input type = "text" id="create-playlist" placeholder="Create Playlist" onkeydown="return /[a-z]/i.test(event.key)">
@@ -36,9 +43,11 @@
           <button id="create-playlist" class="btn">Add</button>
         </p>
 
-      </form>
-    </div>
+      <table id="table">
 
+      </table>
+    </div>
+    <script src="client.js"></script>
 
   </body>
 

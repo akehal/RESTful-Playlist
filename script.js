@@ -114,6 +114,21 @@ app.get('/api/genres/:genre_id', (req, res) => {
     }
 });
 
+// get album details
+app.get('/api/albumnames/:album_title', (req, res) => {
+    const title = req.params.album_title;
+    const albumname = albums.filter(a => a.album_title.includes(title));
+    console.log(title);
+    console.log(albumname);
+    if (albumname) {
+        res.send(albumname);
+    }
+    else {
+        res.status(404).send(`Album ${title} was not found!`);
+    }
+});
+
+
 // get artist details
 app.get('/api/artists', (req, res) => {
     res.send(artists);
@@ -211,5 +226,3 @@ fs.createReadStream('genres.csv')
     .on('end', () => {
         //console.log(genres)
     });
-
-
