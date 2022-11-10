@@ -1,8 +1,8 @@
 // adds event listener for searching for an artist
+if()
 const artistForm = document.getElementById("artist-search");
 artistForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
+e.preventDefault();
     const artistName = document.getElementById("artist-search-input").value;
 
     fetch("http://" + window.location.host + "/api/artistnames/" + artistName, {
@@ -34,12 +34,11 @@ artistForm.addEventListener("submit", (e) => {
 });
 
 const albumForm = document.getElementById("album-search");
-artistForm.addEventListener("submit", (e) => {
+albumForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
     const albumName = document.getElementById("album-search-input").value;
 
-    fetch("http://" + window.location.host + "/api/artistnames/" + artistName, {
+    fetch("http://" + window.location.host + "/api/albumnames/" + albumName, {
         method: "GET",
         headers: new Headers({
             'Content-Type': 'application/json'
@@ -53,8 +52,8 @@ artistForm.addEventListener("submit", (e) => {
                 if (httpResp.ok) {
 
                     // Appends Data
-                    for (let artist of data) {
-                        table.appendChild(createArtistTableRow(artist));
+                    for (let album of data) {
+                        table.appendChild(createAlbumTableRow(album));
                     }
                 }
                 else {
@@ -67,37 +66,71 @@ artistForm.addEventListener("submit", (e) => {
         })
 });
 
+const trackForm = document.getElementById("track-search");
+trackForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const trackName = document.getElementById("track-search-input").value;
+
+    fetch("http://" + window.location.host + "/api/tracknames/" + trackName, {
+        method: "GET",
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    })
+        .then(httpResp => {
+            return httpResp.json().then(data => {
+                // Clears current data
+                let table = document.getElementById("table");
+                table.textContent = "";
+                if (httpResp.ok) {
+
+                    // Appends Data
+                    for (let track of data) {
+                        table.appendChild(createTrackTableRow(track));
+                    }
+                }
+                else {
+                    throw new Error(httpResp.status + "\n" + JSON.stringify(data));
+                }
+            })
+        })
+        .catch(err => {
+            alert(err);
+        })
+});
+
+
 function createTrackTableRow(track) {
     let tableRow = document.createElement("tableRow");
 
-    // adds artist id
+    // adds track id
     tableData = document.createElement("tableData");
-    tableData.appendChild(document.createTextNode(artist.artist_id));
+    tableData.appendChild(document.createTextNode(track.track_id));
     tableRow.appendChild(tableData);
 
-    // adds artist name
+    // adds track's album id
     tableData = document.createElement("tableData");
-    tableData.appendChild(document.createTextNode(artist.artist_name));
+    tableData.appendChild(document.createTextNode(track.album_id));
     tableRow.appendChild(tableData);
 
-    // adds artist location
+    // adds track's album name
     tableData = document.createElement("tableData");
-    tableData.appendChild(document.createTextNode(artist.artist_location));
+    tableData.appendChild(document.createTextNode(track.album_title));
     tableRow.appendChild(tableData);
 
-    // adds artist favorites
+    // adds track bitrate
     tableData = document.createElement("tableData");
-    tableData.appendChild(document.createTextNode(artist.artist_favorites));
+    tableData.appendChild(document.createTextNode(track.track_bit_rate));
     tableRow.appendChild(tableData);
 
-    // adds artist contact
+    // adds track duration
     tableData = document.createElement("tableData");
-    tableData.appendChild(document.createTextNode(artist.artist_contact));
+    tableData.appendChild(document.createTextNode(track.track_duration));
     tableRow.appendChild(tableData);
 
-    // adds artist website
+    // adds track date created
     tableData = document.createElement("tableData");
-    tableData.appendChild(document.createTextNode(artist.artist_website));
+    tableData.appendChild(document.createTextNode(track.track_date_created));
     tableRow.appendChild(tableData);
 
     return tableRow;

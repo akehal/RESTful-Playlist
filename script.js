@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 const jsonDB = require('simple-json-db');
 const db = new jsonDB('database.json');
+const Joi = require('joi');
 
 // create new list with given name
 app.post('/api/playlists/:given_name', (req, res) => {
@@ -104,6 +105,7 @@ app.get('/api/genres', (req, res) => {
 });
 
 app.get('/api/genres/:genre_id', (req, res) => {
+    
     const id = req.params.genre_id;
     const genre = genres.find(g => parseInt(g.genre_id) === parseInt(id));
     if (genre) {
@@ -116,12 +118,25 @@ app.get('/api/genres/:genre_id', (req, res) => {
 
 // get album details
 app.get('/api/albumnames/:album_title', (req, res) => {
+    // Input sanitation
+    const schema = Joi.object({
+    album_title: Joi.string().required()
+    });
+    const result = schema.validate(req.params);
+        if (result.error) {
+    res.status(400).json(result.error.details[0].message);
+    return;
+}
     const title = req.params.album_title;
     const albumname = albums.filter(a => a.album_title.includes(title));
+    const albumreal = [];
+    for(i = 0; i<20;i++){
+        albumreal.push(albumname[i]);
+    }
     console.log(title);
-    console.log(albumname);
-    if (albumname) {
-        res.send(albumname);
+    console.log(albumreal);
+    if (albumreal) {
+        res.send(albumreal);
     }
     else {
         res.status(404).send(`Album ${title} was not found!`);
@@ -163,12 +178,25 @@ app.get('/api/tracks/:track_id', (req, res) => {
 
 // get track details by name using given search pattern
 app.get('/api/tracknames/:track_title', (req, res) => {
+        // Input sanitation
+        const schema = Joi.object({
+            track_title: Joi.string().required()
+            });
+            const result = schema.validate(req.params);
+                if (result.error) {
+            res.status(400).json(result.error.details[0].message);
+            return;
+        }
     const title = req.params.track_title;
     const trackname = tracks.filter(t => t.track_title.includes(title));
+    const trackreal = [];
+    for(i = 0; i<20;i++){
+        trackreal.push(trackname[i]);
+    }
     console.log(title);
-    console.log(trackname);
-    if (trackname) {
-        res.send(trackname);
+    console.log(trackreal);
+    if (trackreal) {
+        res.send(trackreal);
     }
     else {
         res.status(404).send(`Track ${title} was not found!`);
@@ -177,12 +205,25 @@ app.get('/api/tracknames/:track_title', (req, res) => {
 
 // get artist details by name using given search pattern
 app.get('/api/artistnames/:artist_name', (req, res) => {
+        // Input sanitation
+        const schema = Joi.object({
+            artist_name: Joi.string().required()
+            });
+            const result = schema.validate(req.params);
+                if (result.error) {
+            res.status(400).json(result.error.details[0].message);
+            return;
+        }
     const name = req.params.artist_name;
     const artistname = artists.filter(a => a.artist_name.includes(name));
+    const artistreal = [];
+    for(i = 0; i<20;i++){
+        artistreal.push(artistname[i]);
+    }
     console.log(name);
-    console.log(artistname);
-    if (artistname) {
-        res.send(artistname);
+    console.log(artistreal);
+    if (artistreal) {
+        res.send(artistreal);
     }
     else {
         res.status(404).send(`Artist ${name} was not found!`);
